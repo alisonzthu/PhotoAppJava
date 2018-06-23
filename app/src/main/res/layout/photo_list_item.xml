@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--todo: change height of this cardview-->
+
+<!--todo: use data binding for items here-->
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:id="@+id/photo_card"
+    android:layout_margin="4dp">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/photo_image"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!--todo: change src to heart shape-->
+        <ImageButton
+            android:id="@+id/like_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/presence_invisible"
+            app:layout_constraintTop_toBottomOf="@+id/photo_image"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="@dimen/grid_2x"
+            android:layout_marginTop="@dimen/grid_1x"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/photo_likes"
+            app:layout_constraintTop_toTopOf="@+id/like_button"
+            app:layout_constraintStart_toEndOf="@+id/like_button"
+            android:layout_marginStart="@dimen/grid_1x"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>

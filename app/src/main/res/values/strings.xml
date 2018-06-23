@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AlisonPhotoApp</string>
+    <string name="menu_logout">logout</string>
+    <string name="my_header_title">My header title</string>
+</resources>
