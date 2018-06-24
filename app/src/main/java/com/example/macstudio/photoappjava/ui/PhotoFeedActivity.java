@@ -1,5 +1,7 @@
 package com.example.macstudio.photoappjava.ui;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,11 +14,17 @@ import android.view.MenuItem;
 
 import com.example.macstudio.photoappjava.R;
 
+import javax.inject.Inject;
+
 import dagger.android.AndroidInjection;
+
+import static com.example.macstudio.photoappjava.AppConstants.AUTHORIZATION;
 
 public class PhotoFeedActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
+    @Inject
+    SharedPreferences mSharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,15 @@ public class PhotoFeedActivity extends AppCompatActivity {
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        final Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(AUTHORIZATION)) {
+            final SharedPreferences.Editor editor = mSharedPreferences.edit();
+            editor.putString(AUTHORIZATION, intent.getStringExtra(AUTHORIZATION));
+            editor.apply();
+
+            // make api calls withe the Authorization header
+        }
 
         final ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

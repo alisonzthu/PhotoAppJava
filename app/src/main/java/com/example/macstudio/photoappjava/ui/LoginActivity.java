@@ -14,6 +14,8 @@ import com.example.macstudio.photoappjava.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.macstudio.photoappjava.AppConstants.AUTHORIZATION;
+
 public class LoginActivity extends AppCompatActivity {
 
     private WebView mWebView;
@@ -63,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startPhotoFeedActivity(final String id_token) {
         final Intent intent = new Intent(getApplicationContext(), PhotoFeedActivity.class);
-        intent.putExtra("Authorization", id_token);
+        intent.putExtra(AUTHORIZATION, id_token);
         startActivity(intent);
         overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         finish();
