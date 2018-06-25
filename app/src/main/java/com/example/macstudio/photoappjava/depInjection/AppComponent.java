@@ -1,18 +1,24 @@
 package com.example.macstudio.photoappjava.depInjection;
 
 import com.example.macstudio.photoappjava.MyApplication;
+import com.example.macstudio.photoappjava.ui.PhotoFeedActivity;
+import com.example.macstudio.photoappjava.ui.PhotoListFragment;
 
 import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
 import dagger.android.AndroidInjectionModule;
+import dagger.android.AndroidInjector;
 
 @Singleton
-@Component(modules={AndroidInjectionModule.class,
+@Component(modules = {
+                    BuildersModule.class,
                     AppModule.class,
-                    BuildersModule.class})
-public interface AppComponent {
+                    ServiceModule.class,
+                    AndroidInjectionModule.class
+})
+public interface AppComponent extends AndroidInjector<MyApplication> {
 
     @Component.Builder
     interface Builder {
@@ -23,4 +29,7 @@ public interface AppComponent {
     }
 
     void inject(MyApplication myApplication);
+    void inject(PhotoFeedActivity args);
+    void inject(PhotoListFragment args);
+
 }
