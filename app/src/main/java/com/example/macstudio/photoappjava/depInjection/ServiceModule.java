@@ -1,6 +1,9 @@
 package com.example.macstudio.photoappjava.depInjection;
 
-import com.example.macstudio.photoappjava.db.PhotoService;
+import android.arch.lifecycle.ViewModelProvider;
+
+import com.example.macstudio.photoappjava.networking.PhotoServiceClient;
+import com.example.macstudio.photoappjava.viewModel.ViewModelFactory;
 
 import javax.inject.Singleton;
 
@@ -17,14 +20,20 @@ public class ServiceModule {
     Retrofit provideRetrofit() {
         return new Retrofit
                 .Builder()
-                .baseUrl("")
+                .baseUrl("https://kqlpe1bymk.execute-api.us-west-2.amazonaws.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
     @Provides
     @Singleton
-    PhotoService providePhotoService(Retrofit retrofit) {
-        return retrofit.create(PhotoService.class);
+    PhotoServiceClient providePhotoServiceClient(Retrofit retrofit) {
+        return retrofit.create(PhotoServiceClient.class);
+    }
+
+    @Provides
+    @Singleton
+    ViewModelProvider.Factory provideViewModelFactory() {
+        return new ViewModelFactory();
     }
 }
