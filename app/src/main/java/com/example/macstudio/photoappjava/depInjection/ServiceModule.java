@@ -1,7 +1,9 @@
 package com.example.macstudio.photoappjava.depInjection;
 
 import android.arch.lifecycle.ViewModelProvider;
+import android.content.SharedPreferences;
 
+import com.example.macstudio.photoappjava.db.PhotoRepository;
 import com.example.macstudio.photoappjava.networking.PhotoServiceClient;
 import com.example.macstudio.photoappjava.viewModel.ViewModelFactory;
 
@@ -33,7 +35,7 @@ public class ServiceModule {
 
     @Provides
     @Singleton
-    ViewModelProvider.Factory provideViewModelFactory() {
-        return new ViewModelFactory();
+    ViewModelProvider.Factory provideViewModelFactory(PhotoRepository myRepository, SharedPreferences sharedPreferences) {
+        return new ViewModelFactory(myRepository, sharedPreferences);
     }
 }
