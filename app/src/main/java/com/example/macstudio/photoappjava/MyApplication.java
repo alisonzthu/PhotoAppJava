@@ -3,7 +3,6 @@ package com.example.macstudio.photoappjava;
 import android.app.Activity;
 import android.app.Application;
 
-import com.example.macstudio.photoappjava.depInjection.AppComponent;
 import com.example.macstudio.photoappjava.depInjection.DaggerAppComponent;
 
 import javax.inject.Inject;

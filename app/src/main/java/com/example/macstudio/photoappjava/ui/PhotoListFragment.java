@@ -20,6 +20,8 @@ public class PhotoListFragment extends Fragment {
     private RecyclerView mRecyclerview;
     private static final int columnCount = 2;
 
+    // OR, we can get the viewmodel for this fragment in its onActivityCreated() callback
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
