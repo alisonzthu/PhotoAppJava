@@ -28,15 +28,12 @@ import dagger.android.support.AndroidSupportInjection;
 public class PhotoListFragment extends Fragment {
     //todo: replace with databinding:
     private RecyclerView mRecyclerView;
-    private PhotoListAdapter mPhotoListAdapter;
+    private PhotoAdapter mPhotoAdapter;
     private static final int columnCount = 2;
 
     @Inject
     ViewModelFactory viewModelFactory;
     private SharedViewModel mViewModel;
-
-    // OR, we can get the viewmodel for this fragment in its onActivityCreated() callback
-
 
     @Override
     public void onAttach(Context context) {
@@ -50,8 +47,8 @@ public class PhotoListFragment extends Fragment {
         final View view = inflater.inflate(R.layout.photo_list_fragment, container, false);
         mRecyclerView = view.findViewById(R.id.photo_list);
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columnCount);
-        mPhotoListAdapter = new PhotoListAdapter();
-        mRecyclerView.setAdapter(mPhotoListAdapter);
+        mPhotoAdapter = new PhotoAdapter();
+        mRecyclerView.setAdapter(mPhotoAdapter);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         return view;
     }
@@ -63,9 +60,9 @@ public class PhotoListFragment extends Fragment {
         mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoData>>() {
             @Override
             public void onChanged(@Nullable List<PhotoData> photoData) {
-                Log.d("alison", "photo data changed");
+//                Log.d("alison", "photo data changed");
                 // update photoData inside adapter
-                mPhotoListAdapter.setPhotoData(photoData);
+                mPhotoAdapter.setPhotoData(photoData);
             }
         });
     }

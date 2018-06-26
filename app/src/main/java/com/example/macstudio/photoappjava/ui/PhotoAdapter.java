@@ -1,40 +1,43 @@
 package com.example.macstudio.photoappjava.ui;
 
+import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.macstudio.photoappjava.R;
+import com.example.macstudio.photoappjava.databinding.PhotoListItemBinding;
 import com.example.macstudio.photoappjava.networking.models.PhotoData;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.MyViewHolder> {
+public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder> {
 
     private List<PhotoData> mPhotoData = new ArrayList<>();
 
-    public PhotoListAdapter() {
+    public PhotoAdapter() {
         // do nothing
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.photo_list_item, parent, false);
-        return new MyViewHolder(view);
+        final PhotoListItemBinding binding = DataBindingUtil
+                                                .inflate(LayoutInflater.from(parent.getContext()),
+                                                        R.layout.photo_list_item, parent, false);
+        // todo: binding.setcallback
+        return new MyViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        final PhotoData data = mPhotoData.get(position);
-        //todo: new binding!!!!!!
-        holder.likesCount.setText(data.getId());
+        //todo: make mPhotoData.get(position) a variable?
+        holder.mBinding.setPhotoItem(mPhotoData.get(position));
+        holder.mBinding.executePendingBindings();
     }
 
     @Override
@@ -43,11 +46,10 @@ public class PhotoListAdapter extends RecyclerView.Adapter<PhotoListAdapter.MyVi
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView likesCount;
-        public MyViewHolder(View itemView) {
-            super(itemView);
-            likesCount = itemView.findViewById(R.id.photo_likes);
-            // todo: add other view types into the view holder
+        final PhotoListItemBinding mBinding;
+        MyViewHolder(PhotoListItemBinding binding) {
+            super(binding.getRoot());
+            mBinding = binding;
         }
     }
 
