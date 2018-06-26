@@ -27,7 +27,6 @@ public class PhotoRepository {
     }
 
     public LiveData<List<PhotoData>> getPhotoData(@NonNull final String authorizationCode) {
-        Log.d("alison", "authorization code is: " + authorizationCode);
         final MutableLiveData<List<PhotoData>> photoDataList = new MutableLiveData<>();
         mPhotoServiceClient.photoForUser(authorizationCode).enqueue(new Callback<PhotoAppDataResponse>() {
             @Override
@@ -35,14 +34,11 @@ public class PhotoRepository {
                 if(response.isSuccessful()) {
                     //todo: set data to viewmodel
                     Log.d("alison", "response successful");
-                    Log.d("alison", "data: " + response.body().getData());
                     final PhotoAppDataResponse theResponse = response.body();
                     if (theResponse != null) {
                         final List<PhotoData> photoData = theResponse.getData();
                         photoDataList.setValue(photoData);
                     }
-
-
                 } else {
                     Log.d("alison", "response failed");
                 }

@@ -11,6 +11,8 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasActivityInjector;
 
+//Personal note: MyApplication does NOT need to implement HasFragmentInjector
+
 public class MyApplication extends Application implements HasActivityInjector {
 
     @Inject

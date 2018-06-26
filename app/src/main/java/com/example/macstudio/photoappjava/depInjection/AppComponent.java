@@ -29,7 +29,8 @@ public interface AppComponent extends AndroidInjector<MyApplication> {
     }
 
     void inject(MyApplication myApplication);
-    void inject(PhotoFeedActivity args);
-    void inject(PhotoListFragment args);
+    // Personal note: we don't need to inject into Activity and Fragments here
+//    void inject(PhotoFeedActivity args);
+//    void inject(PhotoListFragment args);
 
 }
