@@ -1,43 +1,46 @@
 package com.example.macstudio.photoappjava.ui;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.macstudio.photoappjava.R;
-import com.example.macstudio.photoappjava.networking.models.PhotoData;
 import com.example.macstudio.photoappjava.viewModel.SharedViewModel;
 import com.example.macstudio.photoappjava.viewModel.ViewModelFactory;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 
 import static com.example.macstudio.photoappjava.AppConstants.AUTHORIZATION;
 
-public class PhotoFeedActivity extends AppCompatActivity {
+
+// reference: https://proandroiddev.com/exploring-the-new-dagger-android-module-9eb6075f1a46
+// Quote from the above reference: Note, if our activity did not contain any fragments or the fragments did not need to inject anything, the activity would not need to implement HasSupportFragmentInjector
+
+public class PhotoFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     private DrawerLayout mDrawerLayout;
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     @Inject
     SharedPreferences mSharedPreferences;
     @Inject
     ViewModelFactory viewModelFactory;
 
-    SharedViewModel mViewModel;
+    private SharedViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class PhotoFeedActivity extends AppCompatActivity {
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(SharedViewModel.class);
+//        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(SharedViewModel.class);
 
         final Intent intent = getIntent();
         if (intent != null && intent.hasExtra(AUTHORIZATION)) {
@@ -56,13 +59,13 @@ public class PhotoFeedActivity extends AppCompatActivity {
             final SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putString(AUTHORIZATION, authorization);
             editor.apply();
-            mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoData>>() {
-                @Override
-                public void onChanged(@Nullable List<PhotoData> photoData) {
-                    //update UI
-                    Log.d("alison", "photo data changed");
-                }
-            });
+//            mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoData>>() {
+//                @Override
+//                public void onChanged(@Nullable List<PhotoData> photoData) {
+//                    //update UI
+//                    Log.d("alison", "photo data changed");
+//                }
+//            });
         }
 
         final ActionBar actionBar = getSupportActionBar();

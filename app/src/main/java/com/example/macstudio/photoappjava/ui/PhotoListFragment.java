@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.macstudio.photoappjava.R;
-import com.example.macstudio.photoappjava.db.DataGenerator;
 import com.example.macstudio.photoappjava.networking.models.PhotoData;
 import com.example.macstudio.photoappjava.viewModel.SharedViewModel;
 import com.example.macstudio.photoappjava.viewModel.ViewModelFactory;
@@ -28,7 +27,8 @@ import dagger.android.support.AndroidSupportInjection;
 
 public class PhotoListFragment extends Fragment {
     //todo: replace with databinding:
-    private RecyclerView mRecyclerview;
+    private RecyclerView mRecyclerView;
+    private PhotoListAdapter mPhotoListAdapter;
     private static final int columnCount = 2;
 
     @Inject
@@ -48,11 +48,11 @@ public class PhotoListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.photo_list_fragment, container, false);
-        mRecyclerview = view.findViewById(R.id.photo_list);
+        mRecyclerView = view.findViewById(R.id.photo_list);
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columnCount);
-        final List<String> dummyData = DataGenerator.getDummyData();
-        mRecyclerview.setAdapter(new PhotoListAdapter(dummyData));
-        mRecyclerview.setLayoutManager(gridLayoutManager);
+        mPhotoListAdapter = new PhotoListAdapter();
+        mRecyclerView.setAdapter(mPhotoListAdapter);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         return view;
     }
 
@@ -63,8 +63,9 @@ public class PhotoListFragment extends Fragment {
         mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoData>>() {
             @Override
             public void onChanged(@Nullable List<PhotoData> photoData) {
-                //update UI
                 Log.d("alison", "photo data changed");
+                // update photoData inside adapter
+                mPhotoListAdapter.setPhotoData(photoData);
             }
         });
     }
