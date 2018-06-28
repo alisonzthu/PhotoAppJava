@@ -6,6 +6,12 @@
         <variable
             name="photoItem"
             type="com.example.macstudio.photoappjava.networking.models.PhotoData" />
+        <variable
+            name="openPhotoFragmentListener"
+            type="com.example.macstudio.photoappjava.ui.OpenPhotoFragmentListener" />
+        <variable
+            name="likeHandler"
+            type="com.example.macstudio.photoappjava.ui.LikeButtonClickHandler" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -19,38 +25,44 @@
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/photo_image"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
+                android:onClick="@{(e) -> openPhotoFragmentListener.openPhotoFragment(photoItem)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@{photoItem.images.thumbnail.url}" />
 
-            <!--todo: change src to heart shape-->
             <!--todo: add click listener with data binding-->
             <ImageButton
                 android:id="@+id/like_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@android:drawable/presence_invisible"
+                android:src="@{photoItem.user_has_liked ? @drawable/ic_favorite_red : @drawable/ic_favorite_grey}"
+                android:background="@android:color/white"
+                android:onClick="@{(e) -> likeHandler.onClickLike(photoItem)}"
                 app:layout_constraintTop_toBottomOf="@+id/photo_image"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/grid_2x"
-                android:layout_marginTop="@dimen/grid_1x"/>
-
+                android:layout_marginTop="@dimen/grid_2x"
+                android:layout_marginBottom="@dimen/grid_2x"/>
+            <!--todo: format the numbers to have comma in the middle-->
+            <!--todo: like vs likes depending on like number-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/photo_likes"
                 app:layout_constraintTop_toTopOf="@+id/like_button"
+                app:layout_constraintBottom_toBottomOf="@+id/like_button"
                 app:layout_constraintStart_toEndOf="@+id/like_button"
                 android:layout_marginStart="@dimen/grid_1x"
-                android:text="@{Integer.toString(photoItem.likes.count)}"/>
+                android:text="@{Integer.toString(photoItem.likes.count) + ` likes`}"/>
 
         </android.support.constraint.ConstraintLayout>
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder> {
 
-    private List<PhotoData> mPhotoData = new ArrayList<>();
+    private List<PhotoData> mPhotoList = new ArrayList<>();
 
     public PhotoAdapter() {
         // do nothing
@@ -29,20 +29,23 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         final PhotoListItemBinding binding = DataBindingUtil
                                                 .inflate(LayoutInflater.from(parent.getContext()),
                                                         R.layout.photo_list_item, parent, false);
-        // todo: binding.setcallback
         return new MyViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        //todo: make mPhotoData.get(position) a variable?
-        holder.mBinding.setPhotoItem(mPhotoData.get(position));
+        final PhotoData photoItem = mPhotoList.get(position);
+        // Personal note: calling setSomething, where something is the thing we bind
+        // in the xml files is very important!
+        holder.mBinding.setPhotoItem(photoItem);
+        holder.mBinding.setOpenPhotoFragmentListener(new OpenPhotoFragmentListener());
+        holder.mBinding.setLikeHandler(new LikeButtonClickHandler());
         holder.mBinding.executePendingBindings();
     }
 
     @Override
     public int getItemCount() {
-        return mPhotoData.size();
+        return mPhotoList.size();
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -53,45 +56,45 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         }
     }
 
-    public void setPhotoData(@Nullable final List<PhotoData> photoData) {
-        if(photoData == null) {
+    public void setPhotoData(@Nullable final List<PhotoData> photoList) {
+        if(photoList == null) {
             return;
         }
 
-        if(mPhotoData == null) {
-            mPhotoData = photoData;
-            notifyItemRangeInserted(0, photoData.size());
+        if(mPhotoList == null) {
+            mPhotoList = photoList;
+            notifyItemRangeInserted(0, photoList.size());
         } else {
             final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new DiffUtil.Callback() {
                 @Override
                 public int getOldListSize() {
-                    return mPhotoData.size();
+                    return mPhotoList.size();
                 }
 
                 @Override
                 public int getNewListSize() {
-                    return photoData.size();
+                    return photoList.size();
                 }
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    final String oldPhotoId = mPhotoData.get(oldItemPosition).getId();
-                    final String newPhotoId = photoData.get(newItemPosition).getId();
+                    final String oldPhotoId = mPhotoList.get(oldItemPosition).getId();
+                    final String newPhotoId = photoList.get(newItemPosition).getId();
                     //todo: use util funtion for string comparison
                     return oldPhotoId == newPhotoId;
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    final PhotoData oldPhotoData = mPhotoData.get(oldItemPosition);
-                    final PhotoData newPhotoData = photoData.get(newItemPosition);
+                    final PhotoData oldPhotoData = mPhotoList.get(oldItemPosition);
+                    final PhotoData newPhotoData = photoList.get(newItemPosition);
                     // todo: make sure all necessary comparisons are made
                     return oldPhotoData.getLikes().equals(newPhotoData.getLikes())
                             && oldPhotoData.getImages().equals(newPhotoData.getImages())
                             && oldPhotoData.isUser_has_liked() == newPhotoData.isUser_has_liked();
                 }
             });
-            mPhotoData = photoData;
+            mPhotoList = photoList;
             diffResult.dispatchUpdatesTo(this);
         }
     }
