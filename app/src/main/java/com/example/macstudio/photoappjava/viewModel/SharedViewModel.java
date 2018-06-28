@@ -36,6 +36,8 @@ public class SharedViewModel extends ViewModel {
         return mPhotoData;
     }
 
+    // todo: post like through repository here
+
     @NonNull
     private String getAuthorizationCode() {
         return mSharedPreferences.getString(AUTHORIZATION, "");
