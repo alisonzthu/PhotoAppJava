@@ -1,7 +1,8 @@
 package com.example.macstudio.photoappjava.networking.models;
 
-public class PhotoData {
+public class PhotoItem {
     private Likes likes;
+    private String media_id;
     private User user;
     private PhotoImages images;
     private String id;
@@ -10,6 +11,10 @@ public class PhotoData {
 
     public Likes getLikes() {
         return likes;
+    }
+
+    public String getMedia_id() {
+        return media_id;
     }
 
     public User getUser() {

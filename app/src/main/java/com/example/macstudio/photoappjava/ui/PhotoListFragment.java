@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.macstudio.photoappjava.R;
-import com.example.macstudio.photoappjava.networking.models.PhotoData;
+import com.example.macstudio.photoappjava.networking.models.PhotoItem;
 import com.example.macstudio.photoappjava.viewModel.SharedViewModel;
 import com.example.macstudio.photoappjava.viewModel.ViewModelFactory;
 
@@ -46,23 +46,29 @@ public class PhotoListFragment extends Fragment {
         final View view = inflater.inflate(R.layout.photo_list_fragment, container, false);
         mRecyclerView = view.findViewById(R.id.photo_list);
         final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columnCount);
-        mPhotoAdapter = new PhotoAdapter();
+        mPhotoAdapter = new PhotoAdapter(mViewModel);
         mRecyclerView.setAdapter(mPhotoAdapter);
         mRecyclerView.setLayoutManager(gridLayoutManager);
         return view;
     }
 
+    // todo: what's the difference of providing viewModel in onCreateView and onActivityCreated?
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(getActivity(), viewModelFactory).get(SharedViewModel.class);
-        mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoData>>() {
+        mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoItem>>() {
             @Override
-            public void onChanged(@Nullable List<PhotoData> photoData) {
+            public void onChanged(@Nullable List<PhotoItem> photoData) {
 //                Log.d("alison", "photo data changed");
                 // update photoData inside adapter
                 mPhotoAdapter.setPhotoData(photoData);
             }
         });
+
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), columnCount);
+        mPhotoAdapter = new PhotoAdapter(mViewModel);
+        mRecyclerView.setAdapter(mPhotoAdapter);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
     }
 }

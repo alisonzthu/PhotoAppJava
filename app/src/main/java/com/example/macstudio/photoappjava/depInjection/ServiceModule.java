@@ -35,7 +35,9 @@ public class ServiceModule {
 
     @Provides
     @Singleton
-    ViewModelProvider.Factory provideViewModelFactory(PhotoRepository myRepository, SharedPreferences sharedPreferences) {
-        return new ViewModelFactory(myRepository, sharedPreferences);
+    ViewModelProvider.Factory provideViewModelFactory(PhotoRepository repository,
+                                                      SharedPreferences sharedPreferences,
+                                                      PhotoServiceClient photoServiceClient) {
+        return new ViewModelFactory(repository, sharedPreferences, photoServiceClient);
     }
 }

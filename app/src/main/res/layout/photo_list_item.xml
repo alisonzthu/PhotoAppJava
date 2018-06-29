@@ -4,14 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
+            name="viewModel"
+            type="com.example.macstudio.photoappjava.viewModel.SharedViewModel" />
+        <variable
             name="photoItem"
-            type="com.example.macstudio.photoappjava.networking.models.PhotoData" />
-        <variable
-            name="openPhotoFragmentListener"
-            type="com.example.macstudio.photoappjava.ui.OpenPhotoFragmentListener" />
-        <variable
-            name="likeHandler"
-            type="com.example.macstudio.photoappjava.ui.LikeButtonClickHandler" />
+            type="com.example.macstudio.photoappjava.networking.models.PhotoItem" />
     </data>
 
     <android.support.v7.widget.CardView
@@ -32,7 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:onClick="@{(e) -> openPhotoFragmentListener.openPhotoFragment(photoItem)}"
+                android:onClick="@{() -> viewModel.openPhotoFragment(photoItem)}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -45,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:src="@{photoItem.user_has_liked ? @drawable/ic_favorite_red : @drawable/ic_favorite_grey}"
                 android:background="@android:color/white"
-                android:onClick="@{(e) -> likeHandler.onClickLike(photoItem)}"
+                android:onClick="@{() -> viewModel.clickLike(photoItem)}"
                 app:layout_constraintTop_toBottomOf="@+id/photo_image"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
