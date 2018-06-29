@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.example.macstudio.photoappjava.networking.PhotoServiceClient;
 import com.example.macstudio.photoappjava.networking.models.PhotoAppDataResponse;
-import com.example.macstudio.photoappjava.networking.models.PhotoData;
+import com.example.macstudio.photoappjava.networking.models.PhotoItem;
 
 import java.util.List;
 
@@ -26,8 +26,8 @@ public class PhotoRepository {
         mPhotoServiceClient = client;
     }
 
-    public LiveData<List<PhotoData>> getPhotoData(@NonNull final String authorizationCode) {
-        final MutableLiveData<List<PhotoData>> photoDataList = new MutableLiveData<>();
+    public LiveData<List<PhotoItem>> getPhotoData(@NonNull final String authorizationCode) {
+        final MutableLiveData<List<PhotoItem>> photoDataList = new MutableLiveData<>();
         mPhotoServiceClient.photoForUser(authorizationCode).enqueue(new Callback<PhotoAppDataResponse>() {
             @Override
             public void onResponse(@NonNull Call<PhotoAppDataResponse> call, @NonNull Response<PhotoAppDataResponse> response) {
@@ -36,7 +36,7 @@ public class PhotoRepository {
                     Log.d("alison", "response successful");
                     final PhotoAppDataResponse theResponse = response.body();
                     if (theResponse != null) {
-                        final List<PhotoData> photoData = theResponse.getData();
+                        final List<PhotoItem> photoData = theResponse.getData();
                         photoDataList.setValue(photoData);
                     }
                 } else {

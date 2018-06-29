@@ -4,9 +4,9 @@ import java.util.List;
 
 public class PhotoAppDataResponse {
 
-    private List<PhotoData> data;
+    private List<PhotoItem> data;
 
-    public List<PhotoData> getData() {
+    public List<PhotoItem> getData() {
         return data;
     }
 }

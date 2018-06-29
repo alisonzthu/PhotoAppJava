@@ -10,17 +10,19 @@ import android.view.ViewGroup;
 
 import com.example.macstudio.photoappjava.R;
 import com.example.macstudio.photoappjava.databinding.PhotoListItemBinding;
-import com.example.macstudio.photoappjava.networking.models.PhotoData;
+import com.example.macstudio.photoappjava.networking.models.PhotoItem;
+import com.example.macstudio.photoappjava.viewModel.SharedViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder> {
 
-    private List<PhotoData> mPhotoList = new ArrayList<>();
+    private List<PhotoItem> mPhotoList = new ArrayList<>();
+    private SharedViewModel mViewModel;
 
-    public PhotoAdapter() {
-        // do nothing
+    public PhotoAdapter(final SharedViewModel viewModel) {
+        mViewModel = viewModel;
     }
 
     @NonNull
@@ -34,12 +36,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        final PhotoData photoItem = mPhotoList.get(position);
+        final PhotoItem photoItem = mPhotoList.get(position);
         // Personal note: calling setSomething, where something is the thing we bind
         // in the xml files is very important!
+        holder.mBinding.setViewModel(mViewModel);
         holder.mBinding.setPhotoItem(photoItem);
-        holder.mBinding.setOpenPhotoFragmentListener(new OpenPhotoFragmentListener());
-        holder.mBinding.setLikeHandler(new LikeButtonClickHandler());
+//        holder.mBinding.setOpenPhotoFragmentListener(new OpenPhotoFragmentListener());
+//        holder.mBinding.setLikeHandler(new LikeButtonClickHandler());
         holder.mBinding.executePendingBindings();
     }
 
@@ -56,7 +59,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         }
     }
 
-    public void setPhotoData(@Nullable final List<PhotoData> photoList) {
+    public void setPhotoData(@Nullable final List<PhotoItem> photoList) {
         if(photoList == null) {
             return;
         }
@@ -86,12 +89,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    final PhotoData oldPhotoData = mPhotoList.get(oldItemPosition);
-                    final PhotoData newPhotoData = photoList.get(newItemPosition);
+                    final PhotoItem oldPhotoItem = mPhotoList.get(oldItemPosition);
+                    final PhotoItem newPhotoItem = photoList.get(newItemPosition);
                     // todo: make sure all necessary comparisons are made
-                    return oldPhotoData.getLikes().equals(newPhotoData.getLikes())
-                            && oldPhotoData.getImages().equals(newPhotoData.getImages())
-                            && oldPhotoData.isUser_has_liked() == newPhotoData.isUser_has_liked();
+                    return oldPhotoItem.getLikes().equals(newPhotoItem.getLikes())
+                            && oldPhotoItem.getImages().equals(newPhotoItem.getImages())
+                            && oldPhotoItem.isUser_has_liked() == newPhotoItem.isUser_has_liked();
                 }
             });
             mPhotoList = photoList;

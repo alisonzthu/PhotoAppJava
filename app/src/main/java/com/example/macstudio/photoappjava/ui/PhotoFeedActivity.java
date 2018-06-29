@@ -59,9 +59,9 @@ public class PhotoFeedActivity extends AppCompatActivity implements HasSupportFr
             final SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putString(AUTHORIZATION, authorization);
             editor.apply();
-//            mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoData>>() {
+//            mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoItem>>() {
 //                @Override
-//                public void onChanged(@Nullable List<PhotoData> photoData) {
+//                public void onChanged(@Nullable List<PhotoItem> photoData) {
 //                    //update UI
 //                    Log.d("alison", "photo data changed");
 //                }
