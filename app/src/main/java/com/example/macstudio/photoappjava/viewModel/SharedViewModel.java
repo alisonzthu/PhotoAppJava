@@ -1,6 +1,9 @@
 package com.example.macstudio.photoappjava.viewModel;
 
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MediatorLiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -25,7 +28,9 @@ public class SharedViewModel extends ViewModel {
     //todo: I want to refactor this viewmodel so that I can pass an instance of this viewmodel
     // for data binding. I need to separate out PhotoItem instead of a list of them
     @Nullable
-    private LiveData<List<PhotoItem>> mPhotoData;
+    private MediatorLiveData<List<PhotoItem>> mPhotoData;
+
+    private MutableLiveData<PhotoItem> mSelectedPhoto;
     @NonNull
     private PhotoRepository mPhotoRepository;
 //    @NonNull
@@ -40,23 +45,28 @@ public class SharedViewModel extends ViewModel {
         mPhotoRepository = repository;
         mAuthorizationCode = sharedPreferences.getString(AUTHORIZATION, "");
         mPhotoServiceClient = photoServiceClient;
+        mPhotoData = new MediatorLiveData<>();
+
+        mPhotoData.addSource(getPhotoDataList(), new Observer<List<PhotoItem>>() {
+            @Override
+            public void onChanged(@Nullable List<PhotoItem> photoItems) {
+                mPhotoData.setValue(photoItems);
+            }
+        });
     }
 
     @NonNull
     public LiveData<List<PhotoItem>> getPhotoDataList() {
-        if (mPhotoData == null) {
-            mPhotoData = mPhotoRepository.getPhotoData(mAuthorizationCode);
-        }
-        return mPhotoData;
+         return mPhotoRepository.getPhotoData(mAuthorizationCode);
     }
-
-    // todo: post like through repository here
 
     public void clickLike(@NonNull final PhotoItem photoItem) {
         Log.d("alison", "viewmodel: like is clicked");
         Log.d("alison", "like status: " + photoItem.isUser_has_liked());
+        // todo: this userHasLiked or not should come from the db
         final boolean userHasLiked = photoItem.isUser_has_liked();
         if (userHasLiked) {
+            //todo: extract the logic to abstract function
             mPhotoServiceClient.unlikePhoto(mAuthorizationCode, photoItem.getMedia_id()).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
@@ -92,7 +102,16 @@ public class SharedViewModel extends ViewModel {
 
     }
 
+    //todo: declare this function in the activity
     public void openPhotoFragment(@NonNull final PhotoItem photoItem) {
         Log.d("alison","open PhotoFragment");
+    }
+
+    public void select(@NonNull final PhotoItem photoItem) {
+        mSelectedPhoto.setValue(photoItem);
+    }
+
+    public LiveData<PhotoItem> getSelectedPhoto() {
+        return mSelectedPhoto;
     }
 }

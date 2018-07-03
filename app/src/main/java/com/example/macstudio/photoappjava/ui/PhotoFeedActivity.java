@@ -14,8 +14,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.macstudio.photoappjava.R;
-import com.example.macstudio.photoappjava.viewModel.SharedViewModel;
-import com.example.macstudio.photoappjava.viewModel.ViewModelFactory;
 
 import javax.inject.Inject;
 
@@ -37,10 +35,6 @@ public class PhotoFeedActivity extends AppCompatActivity implements HasSupportFr
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
     @Inject
     SharedPreferences mSharedPreferences;
-    @Inject
-    ViewModelFactory viewModelFactory;
-
-    private SharedViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,21 +45,12 @@ public class PhotoFeedActivity extends AppCompatActivity implements HasSupportFr
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(SharedViewModel.class);
-
         final Intent intent = getIntent();
         if (intent != null && intent.hasExtra(AUTHORIZATION)) {
             final String authorization = intent.getStringExtra(AUTHORIZATION);
             final SharedPreferences.Editor editor = mSharedPreferences.edit();
             editor.putString(AUTHORIZATION, authorization);
             editor.apply();
-//            mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoItem>>() {
-//                @Override
-//                public void onChanged(@Nullable List<PhotoItem> photoData) {
-//                    //update UI
-//                    Log.d("alison", "photo data changed");
-//                }
-//            });
         }
 
         final ActionBar actionBar = getSupportActionBar();

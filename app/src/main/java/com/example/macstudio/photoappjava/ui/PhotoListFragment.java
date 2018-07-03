@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,7 @@ public class PhotoListFragment extends Fragment {
         mViewModel.getPhotoDataList().observe(this, new Observer<List<PhotoItem>>() {
             @Override
             public void onChanged(@Nullable List<PhotoItem> photoData) {
-//                Log.d("alison", "photo data changed");
+                Log.d("alison", "photo data changed");
                 // update photoData inside adapter
                 mPhotoAdapter.setPhotoData(photoData);
             }

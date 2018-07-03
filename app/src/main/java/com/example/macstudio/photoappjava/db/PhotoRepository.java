@@ -27,6 +27,7 @@ public class PhotoRepository {
     }
 
     public LiveData<List<PhotoItem>> getPhotoData(@NonNull final String authorizationCode) {
+        // todo: load from db, and then load from api and update db
         final MutableLiveData<List<PhotoItem>> photoDataList = new MutableLiveData<>();
         mPhotoServiceClient.photoForUser(authorizationCode).enqueue(new Callback<PhotoAppDataResponse>() {
             @Override
